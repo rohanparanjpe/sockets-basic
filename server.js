@@ -11,10 +11,32 @@ var http= require('http').Server(app);  // It asks node to start new server and 
 var io =require('socket.io')(http)   //calling socket with http server
 app.use(express.static(__dirname + '/public'));
 
-io.on('connection',function(){
+// on lets u listen for events
+io.on('connection',function(socket){     // access to individual socket
     
  console.log('User connected by socket.io');   
-}); // on lets u listen for events
+ /*
+  * Make two browser communicate to each other
+ */
+ 
+socket.on('message',function(message){
+    
+    console.log('Message recieved:'+ message.text);
+    socket.broadcast.emit('message',message);  // it sends to everybody but to user who sent it while io.emit sends it to everyone including sender
+    
+});    
+    
+ //socket.emit takes two arguments 'event',{object} event coudl be anything liek pizza delivered, cash got etc here we use message as our event 
+    
+    socket.emit('message',{
+        
+     text:'Welcome to chat application'   
+              
+    });
+
+}); 
+
+
 
 
 //starting server
