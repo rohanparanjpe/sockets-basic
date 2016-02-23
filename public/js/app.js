@@ -13,10 +13,11 @@ socket.on('connect',function(){
   // listen to messege event defined in server.js
 socket.on('message',function(message){
     
+   var momentTimestamp = moment.utc(message.timestamp);  // value is standardized utc time and no time zones
    console.log('New Message');
    console.log(message.text);
    
-   jQuery('.messages').append('<p>'+ message.text +'</p>');    //append adds messeges to html
+   jQuery('.messages').append('<p><strong>'+momentTimestamp.local().format('h:mm a') +': </strong>'+ message.text +'</p>');    //append adds messeges to html
     
     
 });

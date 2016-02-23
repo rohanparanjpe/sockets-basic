@@ -3,6 +3,7 @@
 */
 
 var PORT = process.env.PORT || 3000;
+var moment = require('moment');
 var express = require('express');  //load express using module name
 var app = express();  // we create new express app , when we have to add a new route to express we use app.(something) eg app.get
 
@@ -22,9 +23,9 @@ io.on('connection',function(socket){     // access to individual socket
 socket.on('message',function(message){
     
     console.log('Message recieved:'+ message.text);
-    
+   message.timestamp = moment().valueOf();  //getting unix timestamp in milliseconds
     io.emit('message',message);
-   
+       
     // socket.broadcast.emit('message',message);  it sends to everybody but to user who sent it while io.emit sends it to everyone including sender
     
 });    
@@ -33,7 +34,8 @@ socket.on('message',function(message){
     
     socket.emit('message',{
         
-     text:'Welcome to chat application'   
+     text:'Welcome to chat application' ,
+     timestamp: moment().valueOf()
               
     });
 
