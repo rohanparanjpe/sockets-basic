@@ -22,7 +22,10 @@ io.on('connection',function(socket){     // access to individual socket
 socket.on('message',function(message){
     
     console.log('Message recieved:'+ message.text);
-    socket.broadcast.emit('message',message);  // it sends to everybody but to user who sent it while io.emit sends it to everyone including sender
+    
+    io.emit('message',message);
+   
+    // socket.broadcast.emit('message',message);  it sends to everybody but to user who sent it while io.emit sends it to everyone including sender
     
 });    
     
