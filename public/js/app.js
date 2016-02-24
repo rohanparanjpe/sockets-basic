@@ -6,9 +6,19 @@
 
 var socket = io(); // it is defined in socket.io cdn  
 console.log(name+ ' wants to join ' + room );
+
+//update h1 tag room name
+jQuery('.room-title').text(room); //test adds text in () to the h1 tag 
+
 socket.on('connect',function(){
     
     console.log('connected to socketIO server');
+   //When ever user connect they throw custom event to connect to a room
+    socket.emit('joinRoom',{
+        
+                name : name,
+                room : room        
+    });
         
 });
   // listen to messege event defined in server.js
@@ -46,7 +56,7 @@ $form.on('submit',function(event){
     //send message to the server
     socket.emit('message',{
         
-       name:name,    
+       name:name,
        text:$message.val() 
         
     });
