@@ -24,6 +24,24 @@ var clientInfo = {};
 io.on('connection',function(socket){     // access to individual socket
     
  console.log('User connected by socket.io');   
+    
+    // disconnecting the user
+    
+ socket.on('disconnect', function(){
+     var userData = clientInfo[socket.id];
+         // this will run only if there is info about client in socket
+       if(typeof userData != 'undefined'){
+           socket.leave(userData.room); // user is disconnected from chat room
+           io.to(userData.room).emit('message',{
+              name:'System',
+              text: userData.name + ' has left! ',
+              timestamp: moment().valueOf()   
+               
+           });
+           // delete user data
+          delete clientInfo[socket.id];
+       }
+   });
  
 /*
  Handle the joinRoom event 
