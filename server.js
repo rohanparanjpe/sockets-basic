@@ -33,7 +33,8 @@ socket.on('message',function(message){
  //socket.emit takes two arguments 'event',{object} event coudl be anything liek pizza delivered, cash got etc here we use message as our event 
     
     socket.emit('message',{
-        
+     
+     name:'System',
      text:'Welcome to chat application' ,
      timestamp: moment().valueOf()
               

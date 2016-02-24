@@ -1,10 +1,11 @@
 /*!
    *
  */
-
+ var name = getQueryVariable('name') || 'Anonymous';  //set name to entered name or anonymous
+ var room = getQueryVariable('room');
 
 var socket = io(); // it is defined in socket.io cdn  
-
+console.log(name+ ' wants to join ' + room );
 socket.on('connect',function(){
     
     console.log('connected to socketIO server');
@@ -17,7 +18,14 @@ socket.on('message',function(message){
    console.log('New Message');
    console.log(message.text);
    
-   jQuery('.messages').append('<p><strong>'+momentTimestamp.local().format('h:mm a') +': </strong>'+ message.text +'</p>');    //append adds messeges to html
+    //append name and time stamp
+    
+    var $message = jQuery('.messages');
+    
+    $message.append('<p><strong>'+ message.name +' ' + momentTimestamp.local().format('h:mm a') +'</strong></p>');
+    
+    $message.append('<p>'+ message.text+'</p>');
+ //  jQuery('.messages').append('<p><strong>'+momentTimestamp.local().format('h:mm a') +': </strong>'+ message.text +'</p>');    //append adds messeges to html
     
     
 });
@@ -38,6 +46,7 @@ $form.on('submit',function(event){
     //send message to the server
     socket.emit('message',{
         
+       name:name,    
        text:$message.val() 
         
     });
